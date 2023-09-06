@@ -36,22 +36,29 @@ function onClickImg(event) {
 }
 
 function createBasicLightbox(img) {
-  preview = basicLightbox.create(`
+  preview = basicLightbox.create(
+    `
         <img src="${img.getAttribute('data-source')}" width="800" height="600">
-    `);
+    `,
+    {
+      onShow: () => {
+        window.addEventListener('keydown', closeOnEscPress);
+      },
+      onClose: () => {
+        window.removeEventListener('keydown', closeOnEscPress);
+      },
+    },
+  );
 }
 
 function openModal() {
   if (!preview) return;
-
   preview.show();
-  window.addEventListener('keydown', closeOnEscPress);
 }
 
 function closeOnEscPress(event) {
   if (event.code === 'Escape' && preview) {
     preview.close();
-    window.removeEventListener('keydown', closeOnEscPress);
   }
 }
 
